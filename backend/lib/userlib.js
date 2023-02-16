@@ -19,7 +19,7 @@ module.exports.createFirstUser = async function(callback) {
         var result = await newUser.save();
         callback(null, result);
     } catch (err) {
-        callback(err, null)
+        callback("User Already exist", null)
     }
 }
 
