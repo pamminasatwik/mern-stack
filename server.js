@@ -32,10 +32,18 @@ mongoose.connect(process.env.MONGO_CONNECTION_STRING, {}, function(err) {
         // console.error(err);
     } else {
         console.log("db connected");
-        userlib.createFirstUser(function(err, res) {
-            if (err) {
-               console.error(err);
-            } else console.log(res);
+        // userlib.createFirstUser(function(err, res) {
+        //     if (err) {
+        //        console.error(err);
+        //     } else console.log(res);
+        // });
+        userlib.updateUser(function(err,result){
+            if(err){
+                console.log(err);
+            }
+            else{
+                console.log(result);
+            }
         });
         app.listen(port, function() {
             console.log("Server running on http://localhost:" + port);

@@ -23,4 +23,21 @@ module.exports.createFirstUser = async function(callback) {
     }
 }
 
-// module.exports.get
+
+module.exports.updateUser= async function(callback){
+    try{
+          var query = {
+            username:"satwi",
+
+          };
+          var data = {
+            yearOfGraduation : 2025,
+          };
+          var result = await usermodel.updateOne(query,data);
+          callback(null,result);
+    }
+    catch(err){
+        callback(err,null);
+    }
+}
+
