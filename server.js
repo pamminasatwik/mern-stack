@@ -56,8 +56,7 @@ app.get("/", function(req, res){
     res.sendFile(__dirname + '/index.html');
 });
 
-app.get("/resume", function(req, res){
-	// res.send("I am satwik");
+app.get('/resume', function(req, res) {
     res.sendFile(__dirname + '/resume.html');
 });
 
