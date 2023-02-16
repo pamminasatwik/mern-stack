@@ -23,4 +23,4 @@ module.exports.createFirstUser = async function(callback) {
     }
 }
 
-module.exports.get
+// module.exports.get
