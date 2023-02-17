@@ -14,7 +14,7 @@
   .satwik{
       display: flex;
       height: 140vh;
-      background-color:yellow;
+      background-color:green;
             display: flex;
             align-items: center;
             flex-direction: column;
@@ -64,8 +64,55 @@ h1{
     <div class="gro"><h4>&nbsp;. Hustler</h4></div>
     <div class="grow"><h4>&nbsp;. Music</h4></div>
     <div class="grom"><h4>&nbsp;. Travel</h4></div>
+
 </div>
+<button onclick="toggleUser()">click</button>
 </div> 
+
+<script>
+   
+    const user1 = {
+      name : "Satwik" , 
+      designation  : "Enginner" , 
+      image : "/images/.png",
+    }
+    const user2 = {
+      name : "Rishab" , 
+      designation  : "Eninner" , 
+      image : "/images/.png",
+    }
+
+
+    let currentIsSatwik = true ; 
+    let displayUser = {} ; 
+    let userTitle = document.getElementById("");
+    let userimage = document.getElementById("");
+
+    let toggleUser  = function(){
+         if(currentIsSatwik){
+          displayUser = user2 ;
+          currentIsSatwik = false ;
+         }
+         else{
+          displayUser = user1 ;
+          currentIsSatwik = true ;
+         }
+
+         let userTitle = document.getElementById("")
+    console.log()
+
+    userTitle.innerHTML = displayUser.name;
+      
+    }
+
+                 
+  
+
+    
+
+   
+
+  </script>
 </body>
 </html>
 
