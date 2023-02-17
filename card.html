@@ -55,15 +55,11 @@ h1{
     <h1>Profile</h1>
   
     <div class="pic">
-    <img src="Passport.jpeg" alt="" style="height: 100px">
+    <img id ="userImage" src="Passport.jpeg" alt="" style="height: 100px">
   </div>
 </html>
-<div class="cat"><h3>   &nbsp;. Pammina Satwik </h3></div>
-    <div class="head"><h4>&nbsp;. Undergraduate</h4></div>
-    <div class="grat"><h4>&nbsp;. Entry level programmer</h4></div>
-    <div class="gro"><h4>&nbsp;. Hustler</h4></div>
-    <div class="grow"><h4>&nbsp;. Music</h4></div>
-    <div class="grom"><h4>&nbsp;. Travel</h4></div>
+<div class="cat"><h3 id="userName"> &nbsp;. Pammina Satwik </h3></div>
+    <!-- <div class="head"><h4 id="sats">  &nbsp;. Undergraduate</h4></div> -->
 
 </div>
 <button onclick="toggleUser()">click</button>
@@ -74,19 +70,20 @@ h1{
     const user1 = {
       name : "Satwik" , 
       designation  : "Enginner" , 
-      image : "/images/.png",
+      image : "Passport.jpeg",
     }
     const user2 = {
       name : "Rishab" , 
       designation  : "Eninner" , 
-      image : "/images/.png",
+      image : "https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?cs=srgb&dl=pexels-pixabay-268533.jpg&fm=jpg",
     }
+    
 
 
     let currentIsSatwik = true ; 
-    let displayUser = {} ; 
-    let userTitle = document.getElementById("");
-    let userimage = document.getElementById("");
+    let displayUser = user1 ; 
+      let userName = document.getElementById("userName"); 
+      let userImage =document.getElementById("userImage")
 
     let toggleUser  = function(){
          if(currentIsSatwik){
@@ -98,19 +95,14 @@ h1{
           currentIsSatwik = true ;
          }
 
-         let userTitle = document.getElementById("")
-    console.log()
+           userName.innerHTML = displayUser.name+ "<br>"+displayUser.designation;
+          userImage.src= displayUser.image;
 
-    userTitle.innerHTML = displayUser.name;
+
+
       
+
     }
-
-                 
-  
-
-    
-
-   
 
   </script>
 </body>

@@ -66,10 +66,6 @@ mongoose.connect(process.env.MONGO_CONNECTION_STRING, {}, function(err) {
         //     console.log(result);
         //    }
         // });
-
-
-
-
         app.listen(port, function() {
             console.log("Server running on http://localhost:" + port);
             console.log(`Server running on http://localhost:${port}`);
