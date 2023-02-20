@@ -12,6 +12,11 @@ const options = {
 app.use(express.static("public",options));
 app.use(express.static("frontend"));
 
+app.get("/api/todos", function(req, res) {
+    res.json([
+        { name: "todo1", iscompleted: true }, { name: "todo1", iscompleted: true }, { name: "todo1", iscompleted: true }
+    ]);
+});
 app.get("/", function(req, res){
 	// res.send("I am satwik");
     res.sendFile(__dirname + '/index.html');
