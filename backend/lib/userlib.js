@@ -61,4 +61,3 @@ module.exports.getUserByFilter= async function(filter,callback){
         callback(err,null);
     }
 }
-
