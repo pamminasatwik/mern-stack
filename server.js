@@ -59,7 +59,7 @@ app.get('/resume', function(req, res) {
 });
 
 app.get('/card', function(req, res) {
-    res.sendFile(process.cwd() + '/frontend/html/.html');
+    res.sendFile(process.cwd() + '/frontend/html/card.html');
 });
 
 app.get('/weather', function(req, res) {
