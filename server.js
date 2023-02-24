@@ -23,27 +23,7 @@ const options = {
 app.use(express.static("frontend"));
 app.use(express.json())
 
-app.get("/api/todos", function(req, res) {
-    todolib.getAllTodos(function(err,todos){
-          if(err){
-               res.json({status:"error",message:err,data:null});
-          }
-          else{
-             res.json({status:"success",data:todos})
-          }
-    });
-});
-app.post("/api/todos",function(req,res){
-    const todo = req.body;
-    todolib.createTodo(todo,function(err,dbtodo){
-        if(err){
-            res.json({status:"error",message:err,data:null});
-       }
-       else{
-          res.json({status:"success",data:dbtodo});
-       }
-    })
-})
+
 
     // res.json([
     //     { name: "todo1", iscompleted: true }, { name: "todo1", iscompleted: true }, { name: "todo1", iscompleted: true }
@@ -70,15 +50,49 @@ app.get('/todo', function(req, res) {
     res.sendFile(process.cwd() + '/frontend/html/todo.html');
 });
 
-app.put("/api/todos/:todoid",function(req,res){
-    const todo =req.body;
-    const todoid=req.params.todoid;
-    todolib.updateTodoById(todoid,todo,function(err,dbtodo){
+
+app.get("/api/todos", function(req, res) {
+    todoLib.getAllTodos(function(err,todos){
+          if(err){
+               res.json({status:"error",message:err,
+               data:null});
+          }
+          else{
+             res.json({status:"success",
+             message:"Done",
+             data:todos})
+          }
+    });
+});
+
+app.post("/api/todos",function(req,res){
+    const todo = req.body;
+    todoLib.createTodo(todo,function(err,dbtodo){
         if(err){
             res.json({status:"error",message:err,data:null});
        }
        else{
-          res.json({status:"success",data:dbtodo});
+          res.json({status:"success",
+          message:"Todo Created",
+          data:dbtodo});
+       }
+    })
+})
+
+app.put("/api/todos/:todoid",function(req,res){
+    const todoid=req.params.todoid;
+    const todo =req.body;
+    todoLib.updateTodoById(todoid,todo,function(err,dbtodo){
+        if(err){
+            res.json({
+                status:"error",
+                message:err,
+                 data:null});
+       }
+       else{
+          res.json({status:"success",
+          message:"Updated",
+          data:dbtodo});
        }
 
     });
@@ -86,7 +100,7 @@ app.put("/api/todos/:todoid",function(req,res){
 
 app.delete('/api/todos/:todoid',function(req,res){ 
          const todoid= req.params.todoid;
-         todolib.deleteTodoById(todoid,function(err,dbtodo){
+         todoLib.deleteTodoById(todoid,function(err,dbtodo){
             if(err){
                 res.json({status:"error",message:err,data:null});
            }
@@ -96,16 +110,56 @@ app.delete('/api/todos/:todoid',function(req,res){
          });
 });
 
+// app.get("/api/todos/done",function(req,res){
+//        todoLib.getAlldonetodos(function(err,todos){
+//            if(err){
+//             res.json({
+//                 status:"error",
+//                 message:"err",
+//                 data:null
+//             });
+//            }
+//            else {
+//             res.json({
+//                 status:"success",
+//                 message:"Deleted",
+//                 data:todos
+//             });
+//            }
+
+//        });
+// });
+
+// app.get("/api/todos/delete",function(req,res){
+//         todoLib.getAlldeleteTodos(function(err,todos){
+//              if(err){
+//                 res.json({
+//                        status:"message",
+//                        messgae:err,
+//                        data:null
+//                 });
+//              }
+//              else {
+//                 res.json({
+//                     status:"success",
+//                     message:"cool",
+//                     data:todos
+//                 });
+//                }
+//         });
+// });
+
 
 
 
 mongoose.set('strictQuery', true);
 mongoose.connect(process.env.MONGO_CONNECTION_STRING, {}, function(err) {
-//     if (err) {
-//         console.log("hello, world!");
-        // console.error(err);
-    // } else {
-    //     console.log("db connected");
+    if (err) {
+        console.log("hello, world!");
+        console.error(err);
+    } else {
+        console.log("db connected");
+    }
         // userlib.createFirstUser(function(err, res) {
         //     if (err) {
         //        console.error(err);
@@ -146,6 +200,26 @@ mongoose.connect(process.env.MONGO_CONNECTION_STRING, {}, function(err) {
         });
     
 });  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
