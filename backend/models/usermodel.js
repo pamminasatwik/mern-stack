@@ -7,9 +7,3 @@ const userschema = new mongoose.Schema({
     isDeleted: { type: Boolean , default:false}
 });
 export const usermodel =mongoose.model("user",userschema);
-// const usermodel = mongoose.model("user",userschema);
-// module.exports = mongoose.model("user", userschema);
-
-
-// const usermodel = mongoose.model("user",userschema);
-// module.exports = usermodel
