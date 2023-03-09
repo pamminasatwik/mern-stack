@@ -49,6 +49,9 @@ app.get('/weather', function(req, res) {
 app.get('/todo', function(req, res) {
     res.sendFile(process.cwd() + '/frontend/html/todo.html');
 });
+app.get('/currency',function(req,res){
+    res.sendFile(process.cwd() + '/frontend/html/currency.html');
+})
 
 
 app.get("/api/todos", function(req, res) {
