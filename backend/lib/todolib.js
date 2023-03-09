@@ -2,7 +2,7 @@
 import mongoose from "mongoose"
 
 // import {todomodel} from "../models/todomodel.js";
-import todomodel from "../models/todoModel.js";
+import todomodel from "../models/todomodel.js";
 /*
 1. createTodo
 2. getAllTodos
