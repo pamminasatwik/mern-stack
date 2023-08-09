@@ -46,6 +46,7 @@ app.get('/weather', function(req, res) {
     res.sendFile(process.cwd()+ '/frontend/html/weather.html');
 });
 
+
 app.get('/todo', function(req, res) {
     res.sendFile(process.cwd() + '/frontend/html/todo.html');
 });
