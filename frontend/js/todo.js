@@ -1,89 +1,183 @@
-console.log("hello from js");
+console.log("Hello from JS");
 document.getElementById("loader").style.display = "block";
-const inputbox=document.getElementById("inputBox");
-inputbox.addEventListener("keydown",function(event){
-     if(event.keyCode==13){
-                 createTodo(inputbox.value)
-     }
+const inputBox = document.getElementById("inputBox");
+inputBox.addEventListener("keydown",function(event){
+    if(event.keyCode == 13){
+        createTodo();
+    }
 });
 
-async function createTodo(text){
-    // if text is null or undefined use inputbox.val
-    await fetch("/api/todos",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({title:text})});
-     await getAllTodos();
+async function createTodo(){
+    let text = inputBox.value;
+    inputBox.value = "";
+    await fetch("/api/todos",{method : "POST", headers : {"Content-Type" : "application/json"}, body : JSON.stringify({title : text})});
+    await getAllTodos();
+    await getAllCompletedTodos();
+    await getAllDeletedTodos();
 }
-async function getAllTodos(){
-    const todoresult = await fetch("/api/todos");
-    const todos = await todoresult.json();
-    // alert(JSON.stringify(todos));
-    console.log(todos);
 
-    const todoList = document.getElementById("todoList");
+async function deleteTodo(id){
+    await fetch("/api/todos/" + id, {method : "DELETE" ,headers : {"Content-Type" : "application/json"}});
+    await getAllTodos();
+    await getAllCompletedTodos();
+    await getAllDeletedTodos();
+}
 
+async function setChecked(id)
+{
+    await fetch("/api/todos/" + id,{method : "PUT", headers : {"Content-Type" : "application/json"}, body : JSON.stringify({isCompleted : true})});
+    await getAllTodos();
+    await getAllCompletedTodos();
+    await getAllDeletedTodos();
+}
+
+async function hardDelete(){
+    await fetch("/api/hardDelete",{method : "DELETE", headers : {"Content-Type" : "application/json"}});
+    await getAllTodos();
+    await getAllCompletedTodos();
+    await getAllDeletedTodos();
+}
+
+
+async function getAllDeletedTodos()
+{  
+    const todoList = document.getElementById("deletedTodosList");
     todoList.innerHTML = null;
-    document.getElementById("todoCount").innerHTML = todos.data.length;
-        
-        todos.data.forEach((el, index) => {
-       
+    fetch("/api/isDeleted").then(function(res){
+        return res.json();
+    }).then(function(file){
+        let count = 0;
+        file.data.forEach((el,index) => {
+            
+            let text = el.title;
             let listItem = document.createElement("li");
             let labelItem = document.createElement("label");
-            let inputItem = document.createElement("input");
-            let buttonItem = document.createElement("button");
 
-            // * CREATING THE DELETE BUTTON
-            buttonItem.classList.add("btn");
-            buttonItem.classList.add("btn-outline-danger");
-            buttonItem.innerHTML = `<form action="/api/todos/${el._id} method="delete"><i class="fas fa-close fa-lg fa-fw" type="submit"></i></form>`
-            // buttonItem.setAttribute("onclick", `deleteTodo("${el._id}")`)
-
-            // * CREATING THE CHECKBOX
-            inputItem.classList.add("form-check-input")
-            inputItem.classList.add("me-1")
-            inputItem.type = "checkbox";
-            inputItem.value = "";
-            inputItem.setAttribute("onclick", `setChecked("${el._id}")`)
-            inputItem.id =`Checkbox${index}`
-        
-            
-            // * CREATING THE TEXT LABEL
-            let textNode = document.createTextNode(el.title);
+            let textNode = document.createTextNode(text);
             labelItem.classList.add("form-check-label");
-            labelItem.setAttribute("for",`Checkbox${index}`)
+            labelItem.setAttribute("for",`Checkbox${index}`);
             labelItem.appendChild(textNode);
             labelItem.setAttribute("data-name", `${el._id}`);
 
-            if (el.isCompleted) {
-                labelItem.classList.add("crossed")
-                inputItem.setAttribute("checked", "true")
-            }
-            
-            // * ADDING BOOTSTRAP CLASSES TO THE LIST ITEM <LI> TAG
-            listItem.classList.add("list-group-item")
-            listItem.classList.add("my-list-item")
+            listItem.classList.add("list-group-item");
+            listItem.classList.add("d-flex");
+            listItem.classList.add("justify-content-between");
+            listItem.classList.add("align-items-center");
 
-            listItem.appendChild(inputItem);
+            listItem.appendChild(labelItem);
+            todoList.appendChild(listItem);
+        });
+    }).catch(function(err){
+        console.log(err);
+    });
+}
+
+async function getAllCompletedTodos()
+{  
+    const todoList = document.getElementById("completedTodosList");
+    todoList.innerHTML = null;
+    fetch("/api/isCompleted").then(function(res){
+        return res.json();
+    }).then(function(file){
+        let count = 0;
+        file.data.forEach((el,index) => {
+            
+            let text = el.title;
+            let listItem = document.createElement("li");
+            let labelItem = document.createElement("label");
+            let buttonItem = document.createElement("button");
+
+            buttonItem.classList.add("btn");
+            buttonItem.classList.add("btn-outline-danger");
+            buttonItem.innerHTML = `<i class="fas fa-close fa-lg fa-fw"></i>`;
+            buttonItem.setAttribute("onclick", `deleteTodo("${el._id}")`);
+
+            let textNode = document.createTextNode(text);
+            labelItem.classList.add("form-check-label");
+            labelItem.setAttribute("for",`Checkbox${index}`);
+            labelItem.appendChild(textNode);
+            labelItem.setAttribute("data-name", `${el._id}`);
+
+            listItem.classList.add("list-group-item");
+            listItem.classList.add("d-flex");
+            listItem.classList.add("justify-content-between");
+            listItem.classList.add("align-items-center");
+
             listItem.appendChild(labelItem);
             listItem.appendChild(buttonItem);
-
             todoList.appendChild(listItem);
-        })  
-        document.getElementById("loader").style.display = "none";
-
-
+        });
+    }).catch(function(err){
+        console.log(err);
+    });
 }
-getAllTodos();
 
-// change an attribute of html tag 
+async function getAllTodos(){
+    const todoList = document.getElementById("todoList");
+    todoList.innerHTML = null;
+    fetch("/api/todos").then(function(res){
+        return res.json();
+    }).then(function(file){
+        let count = 0;
+        file.data.forEach((el,index) => {
+            
+            let text = el.title;
+            let listItem = document.createElement("li");
+            let checkbox = document.createElement("input");
+            let labelItem = document.createElement("label");
+            let buttonItem = document.createElement("button");
+
+            buttonItem.classList.add("btn");
+            buttonItem.classList.add("btn-outline-danger");
+            buttonItem.innerHTML = `<i class="fas fa-close fa-lg fa-fw"></i>`;
+            buttonItem.setAttribute("onclick", `deleteTodo("${el._id}")`);
+
+            checkbox.classList.add("form-check-input");
+            checkbox.classList.add("me-2");
+            checkbox.type = "checkbox";
+            checkbox.value = "";
+            checkbox.setAttribute("onclick", `setChecked("${el._id}")`);
+            checkbox.id =`Checkbox${index}`;
+
+            let textNode = document.createTextNode(text);
+            labelItem.classList.add("form-check-label");
+            labelItem.setAttribute("for",`Checkbox${index}`);
+            labelItem.appendChild(textNode);
+            labelItem.setAttribute("data-name", `${el._id}`);
+
+            listItem.classList.add("list-group-item");
+            listItem.classList.add("d-flex");
+            listItem.classList.add("justify-content-between");
+            listItem.classList.add("align-items-center");
+
+            listItem.appendChild(checkbox);
+            listItem.appendChild(labelItem);
+            listItem.appendChild(buttonItem);
+    
+            todoList.appendChild(listItem);
+        });
+    }).catch(function(err){
+        console.log(err);
+    });
+}
+
+fetch("/api/todos").then(function(response){
+    return response.json();
+}).then(function(data){
+    console.log(data);
+    document.getElementById("loader").style.display = "none";
+})
+
 var light = true;
-
-// change innerhtml of themebutton to Sun icon
-function setTheme() {
-    if (light) {
-        document.documentElement.setAttribute("data-bs-theme", "dark");
+function setTheme(){
+    if(light){
+        document.documentElement.setAttribute("data-bs-theme","dark");
         document.getElementById("themeButton").innerHTML = '<i class="fas fa-sun fa-lg fa-fw"></i>';
-    } else {
-        document.documentElement.setAttribute("data-bs-theme", "light");
-        document.getElementById("themeButton").innerHTML = '<i class="fas fa-moon fa-lg fa-fw"></i>';
+        light = false;
     }
-    light = !light;
+    else{
+        document.documentElement.setAttribute("data-bs-theme","light");
+        document.getElementById("themeButton").innerHTML = '<i class="fas fa-moon fa-lg fa-fw"></i>';
+        light = true;
+    }
 }

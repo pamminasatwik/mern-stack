@@ -53,105 +53,91 @@ app.get('/currency',function(req,res){
     res.sendFile(process.cwd() + '/frontend/html/currency.html');
 })
 
-
-app.get("/api/todos", function(req, res) {
-    todoLib.getAllTodos(function(err,todos){
-          if(err){
-               res.json({status:"error",message:err,
-               data:null});
-          }
-          else{
-             res.json({status:"success",
-             message:"Done",
-             data:todos})
-          }
-    });
+app.get("/api/todos",function(req,res){
+	todoLib.getAllTodos(function(err,todos){
+		if(err){
+			res.json({status : "error", message : err, data : null});
+		}
+		else{
+			res.json({status : "success", data : todos});
+		}	
+	});
 });
 
-app.post("/api/todos",function(req,res){
-    const todo = req.body;
-    todoLib.createTodo(todo,function(err,dbtodo){
-        if(err){
-            res.json({status:"error",message:err,data:null});
-       }
-       else{
-          res.json({status:"success",
-          message:"Todo Created",
-          data:dbtodo});
-       }
-    })
-})
+app.get("/api/isCompleted",function(req,res){
+	todoLib.getAllCompleted(function(err,todos){
+		if(err){
+			res.json({status : "error", message : err, data : null});
+		}
+		else{
+			res.json({status : "success", data : todos});
+		}	
+	});
+});
+
+
+app.get("/api/isDeleted",function(req,res){
+	todoLib.getAllDeleted(function(err,todos){
+		if(err){
+			res.json({status : "error", message : err, data : null});
+		}
+		else{
+			res.json({status : "success", data : todos});
+		}	
+	});
+});
+
+
+app.post("/api/todos", function(req,res){
+	const todo = req.body;
+	todoLib.createTodo(todo, function(err,dbtodo){
+		if(err){
+			res.json({status : "error", message : err, data : null});
+		}
+		else{
+			res.json({status : "success", data : dbtodo});
+		}
+	});
+});
+
 
 app.put("/api/todos/:todoid",function(req,res){
-    const todoid=req.params.todoid;
-    const todo =req.body;
-    todoLib.updateTodoById(todoid,todo,function(err,dbtodo){
-        if(err){
-            res.json({
-                status:"error",
-                message:err,
-                 data:null});
-       }
-       else{
-          res.json({status:"success",
-          message:"Updated",
-          data:dbtodo});
-       }
-
-    });
+	const todo = req.body;
+	const todoid = req.params.todoid;
+	todoLib.updateTodoById(todoid,todo,function(err,dbtodo){
+		if(err){
+			res.json({status : "error", message : err, data : null});
+		}
+		else{
+			res.json({status : "success", data : dbtodo});
+		}
+	});
 });
 
-app.delete('/api/todos/:todoid',function(req,res){ 
-         const todoid= req.params.todoid;
-         todoLib.deleteTodoById(todoid,function(err,dbtodo){
-            if(err){
-                res.json({status:"error",message:err,data:null});
-           }
-           else{
-              res.json({status:"success",data:dbtodo});
-           }
-         });
+
+app.delete(("/api/todos/:todoid"),function(req,res){
+	const todoid = req.params.todoid;
+	todoLib.deleteTodoById(todoid, function(err,dbtodo){
+		if(err){
+			res.json({status: "error", message: err, data: null});
+		}
+		else{
+			res.json({status: "success", data: dbtodo});
+		}
+	});
 });
 
-// app.get("/api/todos/done",function(req,res){
-//        todoLib.getAlldonetodos(function(err,todos){
-//            if(err){
-//             res.json({
-//                 status:"error",
-//                 message:"err",
-//                 data:null
-//             });
-//            }
-//            else {
-//             res.json({
-//                 status:"success",
-//                 message:"Deleted",
-//                 data:todos
-//             });
-//            }
 
-//        });
-// });
-
-// app.get("/api/todos/delete",function(req,res){
-//         todoLib.getAlldeleteTodos(function(err,todos){
-//              if(err){
-//                 res.json({
-//                        status:"message",
-//                        messgae:err,
-//                        data:null
-//                 });
-//              }
-//              else {
-//                 res.json({
-//                     status:"success",
-//                     message:"cool",
-//                     data:todos
-//                 });
-//                }
-//         });
-// });
-
+app.delete(("/api/hardDelete"),function(req,res){
+	todoLib.hardDelete(function(err,dbtodo){
+		if(err){
+			res.json({status: "error", message: err, data: null});
+		}
+		else{
+			res.json({status: "success", data: dbtodo});
+		}
+	});
+});
 
 
 
@@ -163,40 +149,7 @@ mongoose.connect(process.env.MONGO_CONNECTION_STRING, {}, function(err) {
     } else {
         console.log("db connected");
     }
-        // userlib.createFirstUser(function(err, res) {
-        //     if (err) {
-        //        console.error(err);
-        //     } else console.log(res);
-        // });
-
-
-        // userlib.updateUser(function(err,result){
-        //     if(err){
-        //         console.log(err);
-        //     }
-        //     else{
-        //         console.log(result);
-        //     }
-        // });
-
-        // userlib.deleteUser("Satwik",function(err,result){
-        //        if(err){
-        //         console.log(err);
-        //        }
-        //        else{
-                    // console.log(res)
-        //        }
-        // });
-
-        // userlib.getUserByFilter({username : " Satwik"},
-        // function(err,res){
-        //    if(err){  
-        //     console.log(err);
-        //    }
-        //    else {
-        //     console.log(result);
-        //    }
-        // });
+    
 
         app.listen(port, function() {
             console.log("Server running on http://localhost:" + port);

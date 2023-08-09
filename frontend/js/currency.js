@@ -51,7 +51,7 @@ window.addEventListener("load", () => {
 ei.addEventListener("click",()=>{
         let cli =fromC.value;
         fromC.value=toC.value;
-        toC.value=cli;
+          toC.value=cli;                               // For swapping purpose india to us or us to india      
         loadFlag(fromC);
         loadFlag(toC);
         getExchangerate();
